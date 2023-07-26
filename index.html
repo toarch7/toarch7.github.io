@@ -1,7 +1,131 @@
 <!DOCTYPE html>
 <html>
-    <body>
-        <h1>Hello</h1>
-        <p>hi</p>
-    </body>
+<head>
+  <title>Game Leaderboards</title>
+  <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 5px;
+    }
+
+    th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #aaaaaa;
+        border-radius: 10px;
+    }
+
+    th {
+        background-color: #c7c7c7;
+        border-radius: 10px;
+        font-weight: bold;
+        width: 3px;
+    }
+
+    td {
+        font-family: 'Courier New', Courier, monospace;
+        font-size: x-large;
+    }
+
+    .entryRow:hover {
+        background-color: #dbdbdb;
+        border-radius: 10px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Game Leaderboards</h1>
+  
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Player</th>
+            <th>Kills</th>
+            <th>Distance</th>
+        </tr>
+        
+    </table>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+
+    <script>
+
+        function areaGetString(area, subarea, loops) {
+            let _area = "?",
+                _subarea = "?",
+                _loop = "";
+
+            if (area == 106) {
+                _area = "HQ";
+                _subarea = subarea;
+            }
+            else if (area == 107) {
+                _area = "$$$";
+                _subarea = "";
+            }
+            else if (area > 100) {
+                _area = area - 100;
+                _subarea = "-?";
+            }
+            else if (area == 100) {
+                _area = "???";
+                _subarea = "";
+            }
+            else {
+                _area = area;
+                _subarea = "-" + subarea;
+            }
+
+            if (loops > 0)
+                _loop = " L" + loops;
+
+            return _area + _subarea + _loop;
+        }
+
+        function populateLeaderboard(kind) {
+            const table = document.querySelector("table");
+            
+            axios.get("https://raw.githubusercontent.com/toarch7/ntm-browser/main/leaderboards/" + kind + "list.json")
+                .then((res) => {
+                    let data = res.data;
+
+                    let entries = Object.values(data.entries);
+
+                    entries.sort((a, b) => b.kills - a.kills)
+                    
+                    entries.forEach((entry, index) => {
+                        const row = table.insertRow();
+                        row.classList.add("entryRow");
+
+                        const rankCell = row.insertCell();
+                        const playerCell = row.insertCell();
+                        const scoreCell = row.insertCell();
+                        const distanceCell = row.insertCell();
+                        
+                        rankCell.textContent = index + 1;
+                        playerCell.textContent = entry.name;
+                        scoreCell.textContent = entry.kills;
+
+                        distanceCell.textContent = areaGetString(entry.area, entry.subarea, entry.loops);
+                        
+                    });
+                })
+
+                .catch(() => {
+
+                });
+
+            
+        }
+
+        populateLeaderboard("daily");
+
+    </script>
+</body>
 </html>
