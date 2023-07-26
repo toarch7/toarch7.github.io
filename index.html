@@ -15,18 +15,24 @@
         text-align: left;
         border-bottom: 1px solid #aaaaaa;
         border-radius: 10px;
+
     }
 
-    th {
-        background-color: #c7c7c7;
+    .firstRow {
+        background-color: #e9e9ed;
         border-radius: 10px;
         font-weight: bold;
-        width: 3px;
+        width: 5px;
+        
+        outline-color: #8f8f9d;
+        outline-width: 4px;
     }
 
     td {
         font-family: 'Courier New', Courier, monospace;
-        font-size: x-large;
+        font-size: xx-large;
+
+        height: 50px;
     }
 
     .entryRow:hover {
@@ -42,20 +48,29 @@
         text-align: center;
         color: #333;
     }
+
+    .button-container {
+        font-size: xx-large;
+        display: flex;
+        height: 150px;
+    }
+
+    .half-button {
+        font-size: larger;
+        flex: 1;
+    }
+
   </style>
 </head>
 <body>
-  <h1>Game Leaderboards</h1>
+    <h1 id="bottomText">Game Leaderboards (yes)</h1>
+
+    <div class="button-container">
+        <button class="half-button" onclick="populateLeaderboard('daily')">Daily</button>
+        <button class="half-button" onclick="populateLeaderboard('weekly')">Weekly</button>
+    </div>
   
-    <table>
-        <tr>
-            <th>Rank</th>
-            <th>Player</th>
-            <th>Kills</th>
-            <th>Distance</th>
-        </tr>
-        
-    </table>
+    <table id="mainTable"> </table>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
 
@@ -93,25 +108,57 @@
             return _area + _subarea + _loop;
         }
 
+        function resetTable(table) {
+            
+            let head = table.createTHead();
+            
+            let row = head.insertRow();
+            row.classList.add("firstRow");
+
+            let rankCell = row.insertCell();
+            let playerCell = row.insertCell();
+            let scoreCell = row.insertCell();
+            let distanceCell = row.insertCell();
+
+            rankCell.textContent = "Rank";
+            playerCell.textContent = "Player";
+            scoreCell.textContent = "Score";
+            distanceCell.textContent = "Distance";
+
+            scoreCell.classList.add("centrify");
+            distanceCell.classList.add("centrify");
+
+            return head;
+        }
+
         function populateLeaderboard(kind) {
-            const table = document.querySelector("table");
+            if (kind != "daily" && kind != "weekly")
+                return; // peak protection
+            
+            const table = document.getElementById("mainTable");
+            const header = document.getElementById("bottomText");
+
+            header.innerText = "Game Leaderboards (" + kind.replace(kind[0], kind[0].toUpperCase()) + ")";
+            table.innerHTML = "";
             
             axios.get("https://raw.githubusercontent.com/toarch7/ntm-browser/main/leaderboards/" + kind + "list.json")
                 .then((res) => {
                     let data = res.data;
 
                     let entries = Object.values(data.entries);
+                    entries.sort((a, b) => b.kills - a.kills);
 
-                    entries.sort((a, b) => b.kills - a.kills)
-                    
+                    head = resetTable(table);
+
                     entries.forEach((entry, index) => {
-                        const row = table.insertRow();
+                        
+                        let row = head.insertRow();
                         row.classList.add("entryRow");
 
-                        const rankCell = row.insertCell();
-                        const playerCell = row.insertCell();
-                        const scoreCell = row.insertCell();
-                        const distanceCell = row.insertCell();
+                        let rankCell = row.insertCell();
+                        let playerCell = row.insertCell();
+                        let scoreCell = row.insertCell();
+                        let distanceCell = row.insertCell();
 
                         scoreCell.classList.add("centrify");
                         distanceCell.classList.add("centrify");
