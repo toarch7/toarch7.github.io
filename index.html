@@ -7,6 +7,7 @@
         width: 100%;
         border-collapse: collapse;
         border-radius: 5px;
+        overflow: auto;
     }
 
     th, td {
@@ -31,6 +32,10 @@
     .entryRow:hover {
         background-color: #dbdbdb;
         border-radius: 10px;
+    }
+
+    .centrify {
+        text-align: center;
     }
 
     h1 {
@@ -107,6 +112,9 @@
                         const playerCell = row.insertCell();
                         const scoreCell = row.insertCell();
                         const distanceCell = row.insertCell();
+
+                        scoreCell.classList.add("centrify");
+                        distanceCell.classList.add("centrify");
                         
                         rankCell.textContent = index + 1;
                         playerCell.textContent = entry.name;
