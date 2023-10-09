@@ -194,7 +194,26 @@
             window.localStorage.setItem("lastKind", kind);
         }
 
+        if (Math.random() < 0.33 && window.localStorage.getItem("lastKind")) {
+            const info = document.getElementById("timeInfo");
+            const rnd = num => Math.round(Math.random() * num);
+
+            const messages = [
+                "There are no secret messages", "Yes, we have Thronebutt at home",
+                "Completely free", "THRONESHAKER+ 10% OFF!", "Hot salamanders in your area",
+                "It's ok to eat", "There's no such thing as a free will",
+                "0 days without accidents", "undefined", "Multiplayer is not real",
+                "I hope you're not reloading this page\nto see more messages",
+                "It's time to stop", `${rnd(255)}.${rnd(255)}.${rnd(255)}.${rnd(255)}`,
+                "Frogive me", "You can unlock the Skeletonby reaching\nLevel Ultra while playing it.",
+                "Frog can be unlocking by starting\nthe run with Golden Frog Pistol"
+            ];
+
+            info.innerText = messages[Math.round(Math.random() * (messages.length - 1))];
+        }
+
         populateLeaderboard(window.localStorage.getItem("lastKind") ?? "daily");
+
 
     </script>
 </body>
