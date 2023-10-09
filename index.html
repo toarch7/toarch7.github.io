@@ -3,6 +3,16 @@
 <head>
   <title>Game Leaderboards</title>
   <style>
+    @font-face {
+        font-family: BigName;
+        src: url(Big-Names.ttf);
+    }
+    
+    @font-face {
+        font-family: PressStart2P;
+        src: url(PressStart2P-Regular.ttf);
+    }
+    
     table {
         width: 100%;
         border-collapse: collapse;
@@ -29,9 +39,7 @@
     }
 
     td {
-        font-family: 'Courier New', Courier, monospace;
         font-size: xx-large;
-
         height: 50px;
     }
 
@@ -44,8 +52,14 @@
         text-align: center;
     }
 
+    * {
+        font-family: PressStart2P;
+    }
+
     h1 {
         text-align: center;
+        font-family: BigName;
+        font-size: 800%;
         color: #333;
     }
 
@@ -63,7 +77,8 @@
   </style>
 </head>
 <body>
-    <h1 id="bottomText">Game Leaderboards (yes)</h1>
+    <h1 id="bottomText">GAME LEADERBOARDS (YES)</h1>
+    <h2 id="timeInfo" style="text-align: center; font-size: 250%;">Updated every hour.</h2>
 
     <div class="button-container">
         <button class="half-button" onclick="populateLeaderboard('daily')">Daily</button>
@@ -137,8 +152,8 @@
             
             const table = document.getElementById("mainTable");
             const header = document.getElementById("bottomText");
-
-            header.innerText = "Game Leaderboards (" + kind.replace(kind[0], kind[0].toUpperCase()) + ")";
+            
+            header.innerText = kind.toUpperCase() + " LEADERBOARDS";
             table.innerHTML = "";
             
             axios.get("https://raw.githubusercontent.com/toarch7/ntm-browser/main/leaderboards/" + kind + "list.json")
@@ -176,10 +191,10 @@
 
                 });
 
-            
+            window.localStorage.setItem("lastKind", kind);
         }
 
-        populateLeaderboard("daily");
+        populateLeaderboard(window.localStorage.getItem("lastKind") ?? "daily");
 
     </script>
 </body>
