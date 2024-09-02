@@ -90,7 +90,7 @@
   </style>
 </head>
 <body>
-    <h1 id="bottomText">GAME LEADERBOARDS (YES)</h1>
+    <h1 id="bottomText"> </h1>
     <h2 id="timeInfo" style="text-align: center; font-size: 150%;">Updated every hour.</h2>
 
     <div class="button-container">
@@ -212,14 +212,21 @@
             const rnd = num => Math.round(Math.random() * num);
 
             const messages = [
-                "There are no secret messages", "Yes, we have Thronebutt at home",
-                "Completely free", "THRONESHAKER+ 10% OFF!", "Hot salamanders in your area",
-                "It's ok to eat", "There's no such thing as free will",
-                "0 days without accidents", "undefined", "Multiplayer is not real",
+                "There are no secret messages",
+                "Yes, we have Thronebutt at home",
+                "Completely free",
+                "THRONESHAKER+ 10% OFF!",
+                "Hot salamanders in your area",
+                "It's ok to eat",
+                "There's no such thing as free will",
+                "0 days without accidents",
+                "Multiplayer is not real",
                 "I hope you're not reloading this page\nto see more messages",
-                "It's time to stop", `${rnd(255)}.${rnd(255)}.${rnd(255)}.${rnd(255)}`,
-                "Frogive me", "You can unlock the Skeleton by reaching\nLevel Ultra while playing it",
-                "Frog can be unlocking by starting\nthe run with Golden Frog Pistol"
+                "It's time to stop",
+                `${rnd(255)}.${rnd(255)}.${rnd(255)}.${rnd(255)}`,
+                "Forgive me",
+                "Skeleton is unlocked for reaching level ultra when playing as the Skeleton",
+                "Frog can be unlocked by starting a new Frog run"
             ];
 
             info.innerText = messages[Math.round(Math.random() * (messages.length - 1))] + ".";
